@@ -1,27 +1,32 @@
 const express = require('express')
 const app = express()
-const { users } = require('./data')
+const { ROLE, users } = require('./data')
+const { authUser, authRole } = require('./auth')
 
 app.use(express.json())
 
-// make setUser middleware execute before every single controller action
-// app.use(setUser)
+// make setUser middleware execute before every single controller action,
+// insted of doing...
+// app.get('/', setUser, (req, res) => {
+//     res.send('Home Page')
+// })
+app.use(setUser)
 
-app.get('/', setUser, (req, res) => {
+app.get('/', (req, res) => {
     res.send('Home Page')
 })
 
-app.get('/admin', setUser, (req, res) => {
+app.get('/dashboard', authUser, (req, res) => {
+    res.send('Dashboard Page')
+})
+
+app.get('/admin',authUser, authRole(ROLE.ADMIN), (req, res) => {
     res.send('Admin Page')
 })
 
-app.get('/user',setUser, (req, res) => {
-    res.send('User Page')
-})
-
-// require("./routes/projects")(app);
-const projectRouter = require('./routes/projects')
-app.use('/projects', projectRouter)
+// require("./routes/projects")(app) ??
+// const projectRouter = require('./routes/projects')
+// app.use('/projects', projectRouter)
 
 // middleware to find the user 
 function setUser(req, res, next) {
