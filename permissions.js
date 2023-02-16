@@ -1,4 +1,3 @@
-// This is a middleware file
 const { ROLE } = require('./data')
 
 // admin and user can view his project with id
