@@ -24,9 +24,7 @@ app.get('/admin',authUser, authRole(ROLE.ADMIN), (req, res) => {
     res.send('Admin Page')
 })
 
-// require("./routes/projects")(app) ??
-// const projectRouter = require('./routes/projects')
-// app.use('/projects', projectRouter)
+require("./routes")(app) 
 
 // middleware to find the user 
 function setUser(req, res, next) {
